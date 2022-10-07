@@ -1,32 +1,28 @@
 import "../css/app.css";
-import { useState } from "react";
+
 import { createRoot, Root } from "react-dom/client";
 
 import { Container, Navbar } from "./components";
-import { TextArea } from "./components/form";
 
-const App = (): JSX.Element => {
-    const [body, setBody] = useState("");
-
-    return (
-        <>
-            <Navbar />
-            <Container className="pt-8 divide-y-4" innerClassName="space-y-8">
-                <TextArea
-                    id="body"
-                    name="body"
-                    label="Body"
-                    value={body}
-                    setValue={setBody}
-                    placeholder="Test..."
-                    autoFocus
-                />
-            </Container>
-        </>
-    );
+type User = {
+    id: number;
+    name: string;
+    email: string;
 };
 
-const el: Element = document.getElementById("app");
+type AppProps = {
+    user: User;
+};
+
+const App = ({ user }: AppProps): JSX.Element => (
+    <>
+        <Navbar />
+        <Container>Hello, {user.name}!</Container>
+    </>
+);
+
+const el: HTMLElement = document.getElementById("app");
+const user = JSON.parse(el.dataset.user);
 const root: Root = createRoot(el);
 
-root.render(<App />);
+root.render(<App user={user} />);

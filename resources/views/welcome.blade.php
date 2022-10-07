@@ -14,7 +14,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div id="app"></div>
+    <div id="app" data-user="{{  request()->user() }}"></div>
 </body>
 
 </html>
