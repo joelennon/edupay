@@ -140,6 +140,8 @@ const formatTime = (time: string) =>
     format(parse(time, "HH:mm:ss", new Date()), "h:mma").toLowerCase();
 
 const CategoryList = () => {
+    const [searchParams] = useSearchParams();
+    const query = searchParams.get("query");
     const { isSuccess, data } = useQuery(["categories"], async ({ signal }) => {
         const { data } = await axios.get(`/api/categories`, {
             signal,
@@ -150,14 +152,19 @@ const CategoryList = () => {
 
     if (!isSuccess) return null;
 
+    const appendQuery = query ? `?query=${query}` : null;
+
     return (
         <div className="space-x-2 flex items-center whitespace-nowrap">
             <span className="font-medium text-xs mr-2 pb-4">
                 Browse by Category:
             </span>
             <div className="whitespace-nowrap flex flex-nowrap space-x-2 overflow-x-auto pb-4">
-                <Pill pill={{ uri: "/", name: "All Categories" }} />
-                <Pills pills={data} />
+                <Pill
+                    pill={{ uri: "/", name: "All Categories" }}
+                    appendQuery={appendQuery}
+                />
+                <Pills pills={data} appendQuery={appendQuery} />
             </div>
         </div>
     );

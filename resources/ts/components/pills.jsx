@@ -1,20 +1,20 @@
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
 
-export const Pills = ({ pills }) => (
+export const Pills = ({ pills, appendQuery }) => (
     <div>
         <nav className="flex space-x-4" aria-label="Tabs">
             {pills.map((pill) => (
-                <Pill pill={pill} key={pill.name} />
+                <Pill pill={pill} key={pill.name} appendQuery={appendQuery} />
             ))}
         </nav>
     </div>
 );
 
-export const Pill = ({ pill }) => (
+export const Pill = ({ pill, appendQuery = null }) => (
     <NavLink
         key={pill.name}
-        to={pill.uri}
+        to={`${pill.uri}${appendQuery ?? ""}`}
         className={({ isActive }) =>
             clsx(
                 isActive
