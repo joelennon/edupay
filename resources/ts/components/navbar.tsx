@@ -50,7 +50,7 @@ type NavbarButtonIconProps = {
 };
 
 export const Navbar = (): JSX.Element => (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-gray-800 fixed inset-x-0 top-0 z-10">
         {({ open }) => (
             <>
                 <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

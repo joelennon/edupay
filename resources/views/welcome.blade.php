@@ -13,7 +13,7 @@
     @vite('resources/ts/app.tsx')
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased bg-gray-100">
     <div id="app" data-user="{{  request()->user() }}"></div>
 </body>
 

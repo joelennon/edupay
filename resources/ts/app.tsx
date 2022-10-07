@@ -1,28 +1,37 @@
 import "../css/app.css";
 
-import { createRoot, Root } from "react-dom/client";
+import { createRoot } from "react-dom/client";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import { Container, Navbar } from "./components";
+import { CoursesList } from "./screens";
 
-type User = {
-    id: number;
-    name: string;
-    email: string;
-};
+const queryClient = new QueryClient();
 
-type AppProps = {
-    user: User;
-};
-
-const App = ({ user }: AppProps): JSX.Element => (
-    <>
+const Root = (): JSX.Element => (
+    <QueryClientProvider client={queryClient}>
         <Navbar />
-        <Container>Hello, {user.name}!</Container>
-    </>
+        <Container className="mt-20">
+            <Outlet />
+        </Container>
+    </QueryClientProvider>
 );
 
-const el: HTMLElement = document.getElementById("app");
-const user = JSON.parse(el.dataset.user);
-const root: Root = createRoot(el);
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Root />,
+        children: [
+            { index: true, element: <CoursesList /> },
+            {
+                path: "categories/:categoryId",
+                element: <CoursesList />,
+            },
+        ],
+    },
+]);
 
-root.render(<App user={user} />);
+createRoot(document.getElementById("app")).render(
+    <RouterProvider router={router} />
+);

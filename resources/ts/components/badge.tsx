@@ -12,6 +12,7 @@ type BadgeProps = {
     shape?: BadgeShape;
     dot?: boolean;
     onRemove?: () => void;
+    className?: string;
 };
 
 export default ({
@@ -21,6 +22,7 @@ export default ({
     shape = "circle",
     dot = false,
     onRemove,
+    className: cls,
 }: BadgeProps): JSX.Element => {
     const className: string = clsx(
         "inline-flex items-center font-medium",
@@ -37,7 +39,8 @@ export default ({
         color === "blue" && "bg-blue-100 text-blue-800",
         color === "indigo" && "bg-indigo-100 text-indigo-800",
         color === "purple" && "bg-purple-100 text-purple-800",
-        color === "pink" && "bg-pink-100 text-pink-800"
+        color === "pink" && "bg-pink-100 text-pink-800",
+        cls
     );
 
     return (

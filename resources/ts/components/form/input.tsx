@@ -27,6 +27,7 @@ export type InputProps = {
     value: string;
     setValue: (value: string) => void;
     autoFocus?: boolean;
+    autoComplete?: string;
     disabled?: boolean;
     error?: string;
     className?: string;
@@ -71,6 +72,7 @@ export default ({
     value,
     setValue,
     autoFocus = false,
+    autoComplete,
     error,
     disabled = false,
     className: cls,
@@ -129,6 +131,7 @@ export default ({
                     autoFocus={autoFocus}
                     aria-describedby={describedBy}
                     disabled={disabled}
+                    autoComplete={autoComplete}
                 />
                 <Appendix
                     icon={icon}

@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\CategoriesController;
+use App\Http\Controllers\Api\CategoryCoursesController;
+use App\Http\Controllers\Api\CoursesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource('courses', CoursesController::class);
+Route::apiResource('categories', CategoriesController::class);
+Route::get('categories/{category}/courses', CategoryCoursesController::class);

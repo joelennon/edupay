@@ -5,6 +5,7 @@ export type ListContainerProps = {
     children: ReactNode;
     fullWidthOnMobile?: boolean;
     flat?: boolean;
+    className?: string;
 };
 
 export type ListProps = {
@@ -24,13 +25,15 @@ export const ListContainer = ({
     children,
     fullWidthOnMobile = false,
     flat = false,
+    className: cls,
 }: ListContainerProps): JSX.Element => {
     const className = clsx(
         "overflow-hidden bg-white",
         flat && "border border-gray-300",
         !flat && "shadow",
         !fullWidthOnMobile && "rounded-md",
-        fullWidthOnMobile && "sm:rounded-md"
+        fullWidthOnMobile && "sm:rounded-md",
+        cls
     );
 
     return <div className={className}>{children}</div>;
