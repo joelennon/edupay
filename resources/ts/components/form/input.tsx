@@ -29,6 +29,7 @@ export type InputProps = {
     autoFocus?: boolean;
     disabled?: boolean;
     error?: string;
+    className?: string;
 };
 
 type IconProps = {
@@ -72,6 +73,7 @@ export default ({
     autoFocus = false,
     error,
     disabled = false,
+    className: cls,
 }: InputProps): JSX.Element => {
     const labelClassName = clsx(
         !hiddenLabel && "block text-sm font-medium text-gray-700",
@@ -86,8 +88,8 @@ export default ({
         (error || (icon && iconPosition === "right")) && "pr-10",
         error &&
             "border-red-300 text-red-900 placeholder-red-900 focus:border-red-500 focus:outline-none focus:ring-red-500",
-        !error &&
-            "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+        !error && "border-gray-300 focus:border-cyan-500 focus:ring-cyan-500",
+        cls
     );
 
     const describedBy = error

@@ -85,8 +85,8 @@ export const Toggle = ({
         checked={enabled}
         onChange={setEnabled}
         className={clsx(
-            enabled ? "bg-indigo-600" : "bg-gray-200",
-            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            enabled ? "bg-cyan-600" : "bg-gray-200",
+            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
         )}
     >
         <span className="sr-only">Use setting</span>
@@ -110,7 +110,7 @@ export const ShortToggle = ({
     <Switch
         checked={enabled}
         onChange={setEnabled}
-        className="group relative inline-flex h-5 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        className="group relative inline-flex h-5 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
     >
         <span className="sr-only">Use setting</span>
         <span
@@ -120,7 +120,7 @@ export const ShortToggle = ({
         <span
             aria-hidden="true"
             className={clsx(
-                enabled ? "bg-indigo-600" : "bg-gray-200",
+                enabled ? "bg-cyan-600" : "bg-gray-200",
                 "pointer-events-none absolute mx-auto h-4 w-9 rounded-full transition-colors duration-200 ease-in-out"
             )}
         />
@@ -175,7 +175,7 @@ const Icon = ({ enabled }: IconProps): JSX.Element => (
             aria-hidden="true"
         >
             <svg
-                className="h-3 w-3 text-indigo-600"
+                className="h-3 w-3 text-cyan-600"
                 fill="currentColor"
                 viewBox="0 0 12 12"
             >

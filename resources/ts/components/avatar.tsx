@@ -10,17 +10,20 @@ export type AvatarProps = {
     shape?: AvatarShape;
     src?: string;
     name?: string;
+    className?: string;
 };
 
 type PlaceholderInitialsProps = {
     size: AvatarSize;
     shape: AvatarShape;
     name: string;
+    className?: string;
 };
 
 type PlaceholderIconProps = {
     size: AvatarSize;
     shape: AvatarShape;
+    className?: string;
 };
 
 export default ({
@@ -28,23 +31,46 @@ export default ({
     shape = "circle",
     src,
     name,
+    className,
 }: AvatarProps): JSX.Element => {
     if (src) {
-        return <Image size={size} shape={shape} src={src} name={name} />;
+        return (
+            <Image
+                size={size}
+                shape={shape}
+                src={src}
+                name={name}
+                className={className}
+            />
+        );
     }
 
     if (name) {
-        return <PlaceholderInitials size={size} shape={shape} name={name} />;
+        return (
+            <PlaceholderInitials
+                size={size}
+                shape={shape}
+                name={name}
+                className={className}
+            />
+        );
     }
 
-    return <PlaceholderIcon size={size} shape={shape} />;
+    return <PlaceholderIcon size={size} shape={shape} className={className} />;
 };
 
-const Image = ({ size, shape, src, name }: AvatarProps): JSX.Element => {
+const Image = ({
+    size,
+    shape,
+    src,
+    name,
+    className: cls,
+}: AvatarProps): JSX.Element => {
     const className = clsx(
         "inline-block",
         getSizeClassName(size),
-        getShapeClassName(shape)
+        getShapeClassName(shape),
+        cls
     );
     const alt: string = `Avatar of ${name ?? "Unknown"}`;
 
@@ -55,11 +81,13 @@ const PlaceholderInitials = ({
     size,
     shape,
     name,
+    className: cls,
 }: PlaceholderInitialsProps): JSX.Element => {
     const className: string = clsx(
         "inline-flex items-center justify-center bg-gray-500",
         getSizeClassName(size),
-        getShapeClassName(shape)
+        getShapeClassName(shape),
+        cls
     );
     const innerClassName: string = clsx(
         "font-medium leading-none text-white",
@@ -77,11 +105,13 @@ const PlaceholderInitials = ({
 const PlaceholderIcon = ({
     size,
     shape,
+    className: cls,
 }: PlaceholderIconProps): JSX.Element => {
     const className: string = clsx(
         "inline-block overflow-hidden bg-gray-100",
         getSizeClassName(size),
-        getShapeClassName(shape)
+        getShapeClassName(shape),
+        cls
     );
 
     return (

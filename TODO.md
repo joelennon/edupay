@@ -53,10 +53,11 @@ Tailwind Components Library
 
 ## Forms
 
--   [ ] Inputs
+-   [x] Inputs
 -   [ ] Input Groups
--   [ ] Select Menus / Comboboxes
--   [ ] Textareas
+-   [x] Select Menus
+-   [ ] Comboboxes
+-   [-] Textareas
 -   [ ] Radio Groups
 -   [ ] Checkboxes
 -   [x] Toggles
