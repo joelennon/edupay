@@ -4,6 +4,7 @@ import clsx from "clsx";
 export type CardProps = {
     children: ReactNode;
     fullWidthOnMobile?: boolean;
+    className?: string;
 };
 
 export type CardBodyProps = {
@@ -24,11 +25,13 @@ export type CardFooterProps = {
 export const Card = ({
     children,
     fullWidthOnMobile = false,
+    className: cls,
 }: CardProps): JSX.Element => {
     const className = clsx(
         "overflow-hidden bg-white shadow divide-y divide-gray-200",
         fullWidthOnMobile && "sm:rounded-lg",
-        !fullWidthOnMobile && "rounded-lg"
+        !fullWidthOnMobile && "rounded-lg",
+        cls
     );
 
     return <div className={className}>{children}</div>;

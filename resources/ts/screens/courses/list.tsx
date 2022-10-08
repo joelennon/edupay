@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import {
+    useParams,
+    useSearchParams,
+    Link,
+    useLocation,
+} from "react-router-dom";
 import { useInView } from "react-cool-inview";
-import { parse, format } from "date-fns";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import axios from "axios";
 import { useDebounce } from "use-debounce";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
 
 import { Badge, Pills, Pill } from "../../components";
 import { ListContainer, List, ListItem } from "../../components/list";
 import { Input } from "../../components/form";
+import { formatTime } from "../../helpers/date";
 
 type Course = {
     id: number;
@@ -25,6 +30,7 @@ type Course = {
     currency: string;
     fee: number;
     tutor: string;
+    url: string;
 };
 
 export default () => {
@@ -42,7 +48,7 @@ export default () => {
         isFetchingNextPage,
         fetchNextPage,
     } = useInfiniteQuery(
-        ["courses", categoryId, query],
+        ["courses", "list", categoryId, query],
         async ({ pageParam = 1, signal }) => {
             let uri = `/api/courses?page=${pageParam}`;
 
@@ -82,20 +88,16 @@ export default () => {
             </div>
             <CategoryList />
             {isLoading && <div>Loading...</div>}
-            {isSuccess && data.pages.length === 0 && (
-                <div>No courses to display.</div>
-            )}
-            {isSuccess && data?.pages.length > 0 && (
-                <CourseList pages={data?.pages} />
-            )}
+            {data?.pages.length === 0 && <div>No courses to display.</div>}
+            {data?.pages.length > 0 && <CourseList pages={data?.pages} />}
             {hasNextPage && !isFetchingNextPage && <div ref={observe} />}
         </div>
     );
 };
 
 const CourseList = ({ pages }): JSX.Element => (
-    <ListContainer className="mb-8">
-        <List>
+    <ListContainer separate className="mb-8">
+        <List separate>
             {pages.map((page) =>
                 page.data?.map((course: Course) => (
                     <Course key={course.id} course={course} />
@@ -105,39 +107,53 @@ const CourseList = ({ pages }): JSX.Element => (
     </ListContainer>
 );
 
-const Course = ({ course }: { course: Course }) => (
-    <ListItem inContainer>
-        <div className="font-semibold text-lg flex items-center">
-            <span>
-                {course.code} {course.title}
-            </span>
-            {course.new && <Badge color="indigo" text="NEW" className="ml-3" />}
-        </div>
-        {course.subtitle && (
-            <div className="font-medium text-cyan-600">{course.subtitle}</div>
-        )}
-        {course.description && (
-            <div className="mt-2 text-gray-500">{course.description}</div>
-        )}
-        <div className="flex items-center space-x-6 text-xs mt-2 text-gray-900 font-semibold">
-            <span>
-                {course.day} {formatTime(course.start_time)} &mdash;{" "}
-                {formatTime(course.end_time)}
-            </span>
-            <span>Duration: {course.duration}</span>
-            <span>
-                Fee: {course.currency}
-                {course.fee}
-            </span>
-        </div>
-        <div className="flex items-center space-x-6 text-xs mt-1 text-gray-900 font-semibold">
-            Tutor: {course.tutor}
-        </div>
-    </ListItem>
-);
+const Course = ({ course }: { course: Course }) => {
+    const previous = useLocation();
 
-const formatTime = (time: string) =>
-    format(parse(time, "HH:mm:ss", new Date()), "h:mma").toLowerCase();
+    return (
+        <ListItem separate noPadding>
+            <Link
+                to={course.url}
+                state={{ previous }}
+                className="block p-6 hover:bg-cyan-50"
+            >
+                <div className="font-semibold text-lg flex items-center">
+                    <span>
+                        {course.code} {course.title}
+                    </span>
+                    {course.new && (
+                        <Badge color="indigo" text="NEW" className="ml-3" />
+                    )}
+                </div>
+                {course.subtitle && (
+                    <div className="font-medium text-cyan-600">
+                        {course.subtitle}
+                    </div>
+                )}
+                {course.description && (
+                    <div className="mt-2 text-gray-500">
+                        {course.description}
+                    </div>
+                )}
+                <div className="mt-2 text-gray-600 font-semibold">
+                    <div className="flex-items-center space-x-6">
+                        <span>
+                            {course.day} {formatTime(course.start_time)} &mdash;{" "}
+                            {formatTime(course.end_time)}
+                        </span>
+                        <span>Duration: {course.duration}</span>
+                        <span>
+                            Fee: {course.currency}
+                            {course.fee}
+                        </span>
+                    </div>
+
+                    <div className="mt-1">Tutor: {course.tutor}</div>
+                </div>
+            </Link>
+        </ListItem>
+    );
+};
 
 const CategoryList = () => {
     const [searchParams] = useSearchParams();
@@ -161,7 +177,7 @@ const CategoryList = () => {
             </span>
             <div className="whitespace-nowrap flex flex-nowrap space-x-2 overflow-x-auto pb-4">
                 <Pill
-                    pill={{ uri: "/", name: "All Categories" }}
+                    pill={{ uri: "/courses", name: "All Categories" }}
                     appendQuery={appendQuery}
                 />
                 <Pills pills={data} appendQuery={appendQuery} />
@@ -171,7 +187,6 @@ const CategoryList = () => {
 };
 
 const Search = () => {
-    const location = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
     const [query, setQuery] = useState(searchParams.get("query") ?? "");
     const [debouncedQuery] = useDebounce(query, 600);

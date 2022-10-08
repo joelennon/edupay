@@ -1,4 +1,5 @@
 import { Fragment, createElement, ReactNode } from "react";
+import { NavLink, Link } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
@@ -6,16 +7,16 @@ import clsx from "clsx";
 import { Avatar } from "./";
 
 const navigation = [
-    { name: "Courses", href: "#", current: true },
-    { name: "Teachers", href: "#", current: false },
-    { name: "Students", href: "#", current: false },
-    { name: "Payments", href: "#", current: false },
-    { name: "Analytics", href: "#", current: false },
+    { name: "Courses", uri: "/courses" },
+    { name: "Teachers", uri: "/teachers" },
+    { name: "Students", uri: "/students" },
+    { name: "Payments", uri: "/payments" },
+    { name: "Analytics", uri: "/analytics" },
 ];
 
 type NavbarItem = {
     name: string;
-    href: string;
+    uri: string;
     current: boolean;
 };
 
@@ -110,7 +111,7 @@ const MobileMenuButton = ({ open }: MobileMenuButtonProps): JSX.Element => (
 );
 
 const NavbarLogo = () => (
-    <div className="flex flex-shrink-0 items-center">
+    <Link to="/" className="flex flex-shrink-0 items-center">
         <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -136,7 +137,7 @@ const NavbarLogo = () => (
                 clipRule="evenodd"
             ></path>
         </svg>
-    </div>
+    </Link>
 );
 
 const NavbarItem = ({
@@ -144,13 +145,14 @@ const NavbarItem = ({
     isDisclosure = false,
 }: NavbarItemProps): JSX.Element => {
     const className = clsx(
-        item.current
-            ? "bg-gray-900 text-white"
-            : "text-gray-300 hover:bg-gray-700 hover:text-white",
         "block px-3 py-2 rounded-md text-base font-medium",
         isDisclosure && "block text-base",
         !isDisclosure && "text-sm"
     );
+
+    const activeClassName = "bg-gray-900 text-white";
+    const inactiveClassName =
+        "text-gray-300 hover:bg-gray-700 hover:text-white";
 
     const ariaCurrent = item.current ? "page" : undefined;
 
@@ -159,7 +161,7 @@ const NavbarItem = ({
             <Disclosure.Button
                 key={item.name}
                 as="a"
-                href={item.href}
+                href={item.uri}
                 className={className}
                 aria-current={ariaCurrent}
             >
@@ -169,9 +171,15 @@ const NavbarItem = ({
     }
 
     return (
-        <a href={item.href} className={className} aria-current={ariaCurrent}>
+        <NavLink
+            to={item.uri}
+            className={({ isActive }) =>
+                clsx(className, isActive ? activeClassName : inactiveClassName)
+            }
+            aria-current={({ isActive }) => (isActive ? "page" : false)}
+        >
             {item.name}
-        </a>
+        </NavLink>
     );
 };
 

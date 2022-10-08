@@ -14,6 +14,7 @@ return new class() extends Migration {
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->string('hashid')->nullable();
             $table->foreignId('category_id')->nullable();
             $table->string('code')->nullable();
             $table->string('title');

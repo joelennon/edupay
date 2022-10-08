@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\HasHashid;
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +13,8 @@ use Laravel\Scout\Searchable;
 class Course extends Model
 {
     use HasFactory;
+    use HasHashid;
+    use HasSlug;
     use Searchable;
 
     private const CURRENCIES = [
@@ -24,23 +28,36 @@ class Course extends Model
     protected $appends = [
         'fee',
         'currency',
+        'url',
     ];
 
     public $meilisearchSettings = [
         'updateFilterableAttributes' => ['category_id'],
     ];
 
+    protected function slugFieldName(): string
+    {
+        return 'title';
+    }
+
     public function fee(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => $attributes['fee_cents'] / 100
+            get: fn () => (string) ($this->fee_cents / 100)
         );
     }
 
     public function currency(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, $attributes) => self::CURRENCIES[$attributes['fee_currency']]
+            get: fn () => self::CURRENCIES[$this->fee_currency]
+        );
+    }
+
+    public function url(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => "/courses/{$this->slug}-{$this->hashid}"
         );
     }
 

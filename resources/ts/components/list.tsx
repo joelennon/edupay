@@ -5,6 +5,7 @@ export type ListContainerProps = {
     children: ReactNode;
     fullWidthOnMobile?: boolean;
     flat?: boolean;
+    separate?: boolean;
     className?: string;
 };
 
@@ -19,18 +20,22 @@ export type ListItemProps = {
     fullWidthOnMobile?: boolean;
     inContainer?: boolean;
     separate?: boolean;
+    noPadding?: boolean;
+    className?: string;
 };
 
 export const ListContainer = ({
     children,
     fullWidthOnMobile = false,
     flat = false,
+    separate = false,
     className: cls,
 }: ListContainerProps): JSX.Element => {
     const className = clsx(
-        "overflow-hidden bg-white",
+        "overflow-hidden",
+        !separate && "bg-white",
         flat && "border border-gray-300",
-        !flat && "shadow",
+        !flat && !separate && "shadow",
         !fullWidthOnMobile && "rounded-md",
         fullWidthOnMobile && "sm:rounded-md",
         cls
@@ -62,15 +67,24 @@ export const ListItem = ({
     fullWidthOnMobile = false,
     inContainer = false,
     separate = false,
+    noPadding = false,
+    className: cls,
 }: ListItemProps): JSX.Element => {
     const className = clsx(
         separate && "overflow-hidden bg-white shadow",
         separate && fullWidthOnMobile && "sm:rounded-md",
         separate && !fullWidthOnMobile && "rounded-md",
-        (separate || inContainer) && fullWidthOnMobile && "sm:px-6 px-4 py-4",
-        (separate || inContainer) && !fullWidthOnMobile && "px-6 py-4",
-        !inContainer && fullWidthOnMobile && "px-4",
-        !inContainer && !fullWidthOnMobile && "sm:px-0 py-4"
+        !noPadding &&
+            (separate || inContainer) &&
+            fullWidthOnMobile &&
+            "sm:px-6 px-4 py-4",
+        !noPadding &&
+            (separate || inContainer) &&
+            !fullWidthOnMobile &&
+            "px-6 py-4",
+        !noPadding && !inContainer && fullWidthOnMobile && "px-4",
+        !noPadding && !inContainer && !fullWidthOnMobile && "sm:px-0 py-4",
+        cls
     );
 
     return <li className={className}>{children}</li>;
