@@ -106,4 +106,17 @@ class CourseTest extends TestCase
 
         $this->assertNotNull($course->hashid);
     }
+
+    /**
+     * Check that a course belongs to a category.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function a_course_belongs_to_one_category()
+    {
+        $course = Course::factory()->create();
+        $this->assertNotNull($course->category);
+    }
 }
