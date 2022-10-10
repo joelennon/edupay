@@ -16,10 +16,12 @@ class CoursesController extends Controller
     public function index(Request $request)
     {
         if ($query = $request->query('query')) {
-            return Course::search($query)->simplePaginate(10);
+            return Course::search($query)
+                ->where('tenant_id', $request->tenant->id)
+                ->simplePaginate(10);
         }
 
-        return Course::simplePaginate(10);
+        return $request->tenant->courses()->simplePaginate(10);
     }
 
     /**
@@ -39,8 +41,12 @@ class CoursesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show(Request $request, Course $course)
     {
+        if ($course->tenant_id !== $request->tenant->id) {
+            abort(404);
+        }
+
         return $course;
     }
 

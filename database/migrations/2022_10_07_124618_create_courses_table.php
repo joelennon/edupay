@@ -15,6 +15,7 @@ return new class() extends Migration {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('hashid')->nullable();
+            $table->foreignId('tenant_id')->nullable();
             $table->foreignId('category_id')->nullable();
             $table->string('code')->nullable();
             $table->string('title');
@@ -31,6 +32,7 @@ return new class() extends Migration {
 
             $table->timestamps();
 
+            $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('SET NULL');
         });
     }

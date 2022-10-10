@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasHashid;
 use App\Traits\HasSlug;
+use App\Traits\HasTenant;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,7 @@ class Course extends Model
     use HasFactory;
     use HasHashid;
     use HasSlug;
+    use HasTenant;
     use Searchable;
 
     private const CURRENCIES = [
@@ -32,7 +34,7 @@ class Course extends Model
     ];
 
     public $meilisearchSettings = [
-        'updateFilterableAttributes' => ['category_id'],
+        'updateFilterableAttributes' => ['tenant_id', 'category_id'],
     ];
 
     protected function slugFieldName(): string

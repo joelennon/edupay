@@ -11,10 +11,11 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import { useDebounce } from "use-debounce";
 
-import { Badge, Pills, Pill } from "../../components";
+import { Badge, Empty, Loading, Pills, Pill } from "../../components";
 import { ListContainer, List, ListItem } from "../../components/list";
 import { Input } from "../../components/form";
 import { formatTime } from "../../helpers/date";
+import { AcademicCapIcon } from "@heroicons/react/24/outline";
 
 type Course = {
     id: number;
@@ -72,6 +73,9 @@ export default () => {
         }
     );
 
+    const isEmpty =
+        data?.pages.length === 1 && data?.pages[0].data.length === 0;
+
     const { observe } = useInView({
         rootMargin: "50px 0px",
         onEnter: ({ unobserve }) => {
@@ -87,8 +91,14 @@ export default () => {
                 <Search />
             </div>
             <CategoryList />
-            {isLoading && <div>Loading...</div>}
-            {data?.pages.length === 0 && <div>No courses to display.</div>}
+            {isLoading && <Loading />}
+            {isEmpty && (
+                <Empty
+                    icon={AcademicCapIcon}
+                    title="No courses found"
+                    description="There are no courses to display"
+                />
+            )}
             {data?.pages.length > 0 && <CourseList pages={data?.pages} />}
             {hasNextPage && !isFetchingNextPage && <div ref={observe} />}
         </div>
@@ -190,8 +200,6 @@ const Search = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [query, setQuery] = useState(searchParams.get("query") ?? "");
     const [debouncedQuery] = useDebounce(query, 600);
-
-    console.log(searchParams);
 
     useEffect(() => {
         if (debouncedQuery) {

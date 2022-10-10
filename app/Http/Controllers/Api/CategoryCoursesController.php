@@ -17,8 +17,13 @@ class CategoryCoursesController extends Controller
      */
     public function __invoke(Request $request, Category $category)
     {
+        if ($request->tenant->id !== $category->tenant_id) {
+            abort(404);
+        }
+
         if ($query = $request->query('query')) {
             return Course::search($query)
+                ->where('tenant_id', $request->tenant->id)
                 ->where('category_id', $category->id)
                 ->simplePaginate(10);
         }

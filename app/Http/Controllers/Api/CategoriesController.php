@@ -13,9 +13,11 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Category::all();
+        $tenant = $request->tenant;
+
+        return $tenant->categories()->get();
     }
 
     /**

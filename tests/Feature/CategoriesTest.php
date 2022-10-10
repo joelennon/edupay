@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Tenant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -13,13 +14,16 @@ class CategoriesTest extends TestCase
     use RefreshDatabase;
 
     private $categories;
-    private $courses;
+    private $firstTenant;
+    private $secondTenant;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->categories = Category::factory(20)->create();
+        $this->firstTenant = Tenant::factory()->create();
+        $this->secondTenant = Tenant::factory()->create();
+        $this->categories = Category::factory(20)->create(['tenant_id' => $this->firstTenant->id]);
     }
 
     /**
@@ -31,10 +35,26 @@ class CategoriesTest extends TestCase
      */
     public function getting_categories_list_returns_correct_results()
     {
-        $response = $this->get('/api/categories');
+        $response = $this->get("https://{$this->firstTenant->domain}/api/categories");
 
         $response->assertStatus(200);
         $response->assertJsonCount(20);
+    }
+
+    /**
+     * Enure that only categories for the given tenant are returned by the API.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function should_only_return_categories_for_given_tenant()
+    {
+        $categories = Category::factory(5)->create(['tenant_id' => $this->secondTenant->id]);
+        $response = $this->get("https://{$this->secondTenant->domain}/api/categories");
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(5);
     }
 
     /**
@@ -48,7 +68,7 @@ class CategoriesTest extends TestCase
     {
         $category = $this->categories->first();
         Course::factory(15)->create(['category_id' => $category->id]);
-        $url = "/api/categories/{$category->hashid}/courses";
+        $url = "https://{$this->firstTenant->domain}/api/categories/{$category->hashid}/courses";
 
         $response = $this->get($url);
         $response->assertStatus(200);
@@ -64,5 +84,21 @@ class CategoriesTest extends TestCase
 
         $response = $this->get($url.'?query=foo');
         $response->assertStatus(200);
+    }
+
+    /**
+     * Enure that only categories for the given tenant are returned by the API.
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function should_only_return_courses_for_a_category_in_the_given_tenant()
+    {
+        $category = $this->categories->first();
+        $url = "https://{$this->secondTenant->domain}/api/categories/{$category->hashid}/courses";
+
+        $response = $this->get($url);
+        $response->assertStatus(404);
     }
 }

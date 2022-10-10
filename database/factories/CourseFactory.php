@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +19,7 @@ class CourseFactory extends Factory
     public function definition()
     {
         return [
+            'tenant_id' => Tenant::factory(),
             'category_id' => Category::factory(),
             'code' => strtoupper(fake()->randomLetter()).fake()->randomNumber(2),
             'title' => fake()->sentence(),
