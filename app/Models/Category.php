@@ -17,6 +17,12 @@ class Category extends Model
     use HasSlug;
     use HasTenant;
 
+    protected $fillable = [
+        'tenant_id',
+        'name',
+        'description',
+    ];
+
     public function url(): Attribute
     {
         return Attribute::make(

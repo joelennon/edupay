@@ -26,7 +26,7 @@ export default () => {
             {isSuccess && (
                 <img
                     src={data.bannerUrl}
-                    className="h-48 mt-16 mb-8 w-full object-cover"
+                    className="h-64 mt-16 mb-8 w-full object-cover"
                 />
             )}
             <Container>
@@ -95,14 +95,16 @@ export default () => {
                                                 {data.duration}
                                             </dd>
                                         </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">
-                                                Tutor
-                                            </dt>
-                                            <dd className="mt-1 text-sm text-gray-900">
-                                                {data.tutor}
-                                            </dd>
-                                        </div>
+                                        {data.tutor && (
+                                            <div>
+                                                <dt className="text-sm font-medium text-gray-500">
+                                                    Tutor
+                                                </dt>
+                                                <dd className="mt-1 text-sm text-gray-900">
+                                                    {data.tutor}
+                                                </dd>
+                                            </div>
+                                        )}
                                         <div>
                                             <dt className="text-sm font-medium text-gray-500">
                                                 Fee
