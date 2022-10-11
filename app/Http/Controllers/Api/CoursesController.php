@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class CoursesController extends Controller
 {
+    private const ITEMS_PER_PAGE = 12;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,10 +20,13 @@ class CoursesController extends Controller
         if ($query = $request->query('query')) {
             return Course::search($query)
                 ->where('tenant_id', $request->tenant->id)
-                ->simplePaginate(10);
+                ->simplePaginate(self::ITEMS_PER_PAGE);
         }
 
-        return $request->tenant->courses()->simplePaginate(10);
+        return $request->tenant
+            ->courses()
+            ->orderBy('day')
+            ->simplePaginate(self::ITEMS_PER_PAGE);
     }
 
     /**

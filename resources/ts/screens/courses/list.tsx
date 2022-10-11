@@ -41,37 +41,33 @@ export default () => {
     const params = useParams();
     const categoryId = params.categoryId?.split("-").pop();
 
-    const {
-        isLoading,
-        isSuccess,
-        data,
-        hasNextPage,
-        isFetchingNextPage,
-        fetchNextPage,
-    } = useInfiniteQuery(
-        ["courses", "list", categoryId, query],
-        async ({ pageParam = 1, signal }) => {
-            let uri = `/api/courses?page=${pageParam}`;
+    const { isLoading, data, hasNextPage, isFetchingNextPage, fetchNextPage } =
+        useInfiniteQuery(
+            ["courses", "list", categoryId, query],
+            async ({ pageParam = 1, signal }) => {
+                let uri = `/api/courses?page=${pageParam}`;
 
-            if (categoryId) {
-                uri = `/api/categories/${categoryId}/courses?page=${pageParam}`;
+                if (categoryId) {
+                    uri = `/api/categories/${categoryId}/courses?page=${pageParam}`;
+                }
+
+                if (query) {
+                    uri += `&query=${query}`;
+                }
+
+                const { data } = await axios.get(uri, {
+                    signal,
+                });
+
+                return data;
+            },
+            {
+                getNextPageParam: (lastPage, allPages) =>
+                    lastPage.next_page_url
+                        ? lastPage.current_page + 1
+                        : undefined,
             }
-
-            if (query) {
-                uri += `&query=${query}`;
-            }
-
-            const { data } = await axios.get(uri, {
-                signal,
-            });
-
-            return data;
-        },
-        {
-            getNextPageParam: (lastPage, allPages) =>
-                lastPage.next_page_url ? lastPage.current_page + 1 : undefined,
-        }
-    );
+        );
 
     const isEmpty =
         data?.pages.length === 1 && data?.pages[0].data.length === 0;
@@ -106,62 +102,55 @@ export default () => {
 };
 
 const CourseList = ({ pages }): JSX.Element => (
-    <ListContainer separate className="mb-8">
-        <List separate>
-            {pages.map((page) =>
-                page.data?.map((course: Course) => (
-                    <Course key={course.id} course={course} />
-                ))
-            )}
-        </List>
-    </ListContainer>
+    <div className="grid grid-cols-4 gap-4">
+        {pages.map((page) =>
+            page.data?.map((course: Course) => (
+                <Course key={course.id} course={course} />
+            ))
+        )}
+    </div>
 );
 
 const Course = ({ course }: { course: Course }) => {
     const previous = useLocation();
 
     return (
-        <ListItem separate noPadding>
-            <Link
-                to={course.url}
-                state={{ previous }}
-                className="block p-6 hover:bg-cyan-50"
-            >
-                <div className="font-semibold text-lg flex items-center">
-                    <span>
-                        {course.code} {course.title}
-                    </span>
-                    {course.new && (
-                        <Badge color="indigo" text="NEW" className="ml-3" />
-                    )}
+        <Link
+            to={course.url}
+            state={{ previous }}
+            className="group overflow-hidden bg-white rounded-lg shadow hover:bg-cyan-50 flex flex-col"
+        >
+            <img
+                className="aspect-video object-cover group-hover:opacity-80"
+                src="https://images.unsplash.com/photo-1585758874546-c593da5f29e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"
+            />
+            <div className="p-4 flex flex-col justify-between flex-1">
+                <div
+                    className="font-semibold text-lg line-clamp-2 flex-1"
+                    title={course.title}
+                >
+                    {course.title}
                 </div>
-                {course.subtitle && (
-                    <div className="font-medium text-cyan-600">
-                        {course.subtitle}
+                <div className="mt-2 text-gray-600">
+                    <div>
+                        <div className="flex justify-between items-center">
+                            <div>{course.day}</div>
+                            <div>{course.duration}</div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <div>
+                                {formatTime(course.start_time)} &mdash;{" "}
+                                {formatTime(course.end_time)}
+                            </div>
+                            <div className="font-semibold text-gray-900">
+                                {course.currency}
+                                {course.fee}
+                            </div>
+                        </div>
                     </div>
-                )}
-                {course.description && (
-                    <div className="mt-2 text-gray-500">
-                        {course.description}
-                    </div>
-                )}
-                <div className="mt-2 text-gray-600 font-semibold">
-                    <div className="flex-items-center space-x-6">
-                        <span>
-                            {course.day} {formatTime(course.start_time)} &mdash;{" "}
-                            {formatTime(course.end_time)}
-                        </span>
-                        <span>Duration: {course.duration}</span>
-                        <span>
-                            Fee: {course.currency}
-                            {course.fee}
-                        </span>
-                    </div>
-
-                    <div className="mt-1">Tutor: {course.tutor}</div>
                 </div>
-            </Link>
-        </ListItem>
+            </div>
+        </Link>
     );
 };
 

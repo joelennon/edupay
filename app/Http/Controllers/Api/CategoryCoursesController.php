@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class CategoryCoursesController extends Controller
 {
+    private const ITEMS_PER_PAGE = 12;
+
     /**
      * Handle the incoming request.
      *
@@ -25,9 +27,11 @@ class CategoryCoursesController extends Controller
             return Course::search($query)
                 ->where('tenant_id', $request->tenant->id)
                 ->where('category_id', $category->id)
-                ->simplePaginate(10);
+                ->simplePaginate(self::ITEMS_PER_PAGE);
         }
 
-        return $category->courses()->simplePaginate(10);
+        return $category->courses()
+            ->orderBy('day')
+            ->simplePaginate(self::ITEMS_PER_PAGE);
     }
 }
