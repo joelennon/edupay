@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryListResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class CategoriesController extends Controller
     {
         $tenant = $request->tenant;
 
-        return $tenant->categories()->get();
+        return CategoryListResource::collection($tenant->categories()->get());
     }
 
     /**

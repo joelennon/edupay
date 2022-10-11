@@ -40,6 +40,7 @@ export default ({
         color === "indigo" && "bg-indigo-100 text-indigo-800",
         color === "purple" && "bg-purple-100 text-purple-800",
         color === "pink" && "bg-pink-100 text-pink-800",
+        color === "cyan" && "bg-cyan-100 text-cyan-800",
         cls
     );
 

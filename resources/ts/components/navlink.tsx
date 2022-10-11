@@ -53,8 +53,6 @@ export default forwardRef<HTMLAnchorElement, NavLinkProps>(
         let altPath = useResolvedPath(alternativeMatchPath);
         let altMatch = useMatch({ path: altPath.pathname, end, caseSensitive });
 
-        console.log(altPath, altMatch);
-
         let routerState = useContext(DataRouterStateContext);
         let nextLocation = routerState?.navigation.location;
         let nextPath = useResolvedPath(nextLocation || "");

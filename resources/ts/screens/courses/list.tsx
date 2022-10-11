@@ -11,27 +11,28 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import { useDebounce } from "use-debounce";
 
-import { Badge, Empty, Loading, Pills, Pill } from "../../components";
-import { ListContainer, List, ListItem } from "../../components/list";
+import {
+    Container,
+    Badge,
+    Empty,
+    Loading,
+    Pills,
+    Pill,
+} from "../../components";
 import { Input } from "../../components/form";
 import { formatTime } from "../../helpers/date";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 
 type Course = {
-    id: number;
-    code: string;
     title: string;
-    subtitle?: string;
-    description?: string;
     new?: boolean;
     day: string;
-    start_time: string;
-    end_time: string;
+    startTime: string;
+    endTime: string;
     duration: string;
-    currency: string;
     fee: number;
-    tutor: string;
     url: string;
+    bannerUrl: string;
 };
 
 export default () => {
@@ -63,8 +64,8 @@ export default () => {
             },
             {
                 getNextPageParam: (lastPage, allPages) =>
-                    lastPage.next_page_url
-                        ? lastPage.current_page + 1
+                    lastPage.links.next
+                        ? lastPage.meta.current_page + 1
                         : undefined,
             }
         );
@@ -81,7 +82,7 @@ export default () => {
     });
 
     return (
-        <div>
+        <Container className="mt-16">
             <div className="flex items-center justify-between">
                 <div className="font-bold my-4 text-2xl">Courses List</div>
                 <Search />
@@ -97,7 +98,7 @@ export default () => {
             )}
             {data?.pages.length > 0 && <CourseList pages={data?.pages} />}
             {hasNextPage && !isFetchingNextPage && <div ref={observe} />}
-        </div>
+        </Container>
     );
 };
 
@@ -105,7 +106,7 @@ const CourseList = ({ pages }): JSX.Element => (
     <div className="grid grid-cols-4 gap-4">
         {pages.map((page) =>
             page.data?.map((course: Course) => (
-                <Course key={course.id} course={course} />
+                <Course key={course.url} course={course} />
             ))
         )}
     </div>
@@ -120,10 +121,19 @@ const Course = ({ course }: { course: Course }) => {
             state={{ previous }}
             className="group overflow-hidden bg-white rounded-lg shadow hover:bg-cyan-50 flex flex-col"
         >
-            <img
-                className="aspect-video object-cover group-hover:opacity-80"
-                src="https://images.unsplash.com/photo-1585758874546-c593da5f29e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"
-            />
+            <div className="relative">
+                <img
+                    className="aspect-video object-cover group-hover:opacity-80"
+                    src={course.bannerUrl}
+                />
+                {course.new && (
+                    <Badge
+                        text="NEW"
+                        color="cyan"
+                        className="m-2 absolute top-0 right-0"
+                    />
+                )}
+            </div>
             <div className="p-4 flex flex-col justify-between flex-1">
                 <div
                     className="font-semibold text-lg line-clamp-2 flex-1"
@@ -139,11 +149,10 @@ const Course = ({ course }: { course: Course }) => {
                         </div>
                         <div className="flex justify-between items-center">
                             <div>
-                                {formatTime(course.start_time)} &mdash;{" "}
-                                {formatTime(course.end_time)}
+                                {formatTime(course.startTime)} &mdash;{" "}
+                                {formatTime(course.endTime)}
                             </div>
                             <div className="font-semibold text-gray-900">
-                                {course.currency}
                                 {course.fee}
                             </div>
                         </div>
@@ -176,7 +185,7 @@ const CategoryList = () => {
             </span>
             <div className="whitespace-nowrap flex flex-nowrap space-x-2 overflow-x-auto pb-4">
                 <Pill
-                    pill={{ uri: "/courses", name: "All Categories" }}
+                    pill={{ url: "/courses", name: "All Categories" }}
                     appendQuery={appendQuery}
                 />
                 <Pills pills={data} appendQuery={appendQuery} />

@@ -17,11 +17,7 @@ class Category extends Model
     use HasSlug;
     use HasTenant;
 
-    protected $appends = [
-        'uri', 'slug',
-    ];
-
-    public function uri(): Attribute
+    public function url(): Attribute
     {
         return Attribute::make(
             get: fn () => "/categories/{$this->slug}-{$this->hashid}"

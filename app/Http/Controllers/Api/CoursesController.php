@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CourseListResource;
+use App\Http\Resources\CourseShowResource;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -18,15 +20,15 @@ class CoursesController extends Controller
     public function index(Request $request)
     {
         if ($query = $request->query('query')) {
-            return Course::search($query)
-                ->where('tenant_id', $request->tenant->id)
-                ->simplePaginate(self::ITEMS_PER_PAGE);
+            $courses = Course::search($query)
+                ->where('tenant_id', $request->tenant->id);
+        } else {
+            $courses = $request->tenant
+                ->courses()
+                ->orderBy('day');
         }
 
-        return $request->tenant
-            ->courses()
-            ->orderBy('day')
-            ->simplePaginate(self::ITEMS_PER_PAGE);
+        return CourseListResource::collection($courses->simplePaginate(self::ITEMS_PER_PAGE));
     }
 
     /**
@@ -52,7 +54,7 @@ class CoursesController extends Controller
             abort(404);
         }
 
-        return $course;
+        return new CourseShowResource($course);
     }
 
     /**

@@ -6,4 +6,5 @@ export type Color =
     | "blue"
     | "indigo"
     | "purple"
-    | "pink";
+    | "pink"
+    | "cyan";

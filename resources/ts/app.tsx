@@ -18,9 +18,9 @@ const queryClient = new QueryClient();
 const Root = (): JSX.Element => (
     <QueryClientProvider client={queryClient}>
         <Navbar />
-        <Container className="mt-20">
-            <Outlet />
-        </Container>
+
+        <Outlet />
+
         <ScrollRestoration getKey={(location) => location.pathname} />
     </QueryClientProvider>
 );

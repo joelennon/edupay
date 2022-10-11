@@ -14,7 +14,7 @@ export const Pills = ({ pills, appendQuery }) => (
 export const Pill = ({ pill, appendQuery = null }) => (
     <NavLink
         key={pill.name}
-        to={`${pill.uri}${appendQuery ?? ""}`}
+        to={`${pill.url}${appendQuery ?? ""}`}
         className={({ isActive }) =>
             clsx(
                 isActive

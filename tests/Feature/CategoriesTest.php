@@ -72,14 +72,14 @@ class CategoriesTest extends TestCase
 
         $response = $this->get($url);
         $response->assertStatus(200);
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(12, 'data');
 
         $nextPageUrl = url($url).'?page=2';
         $response->assertJsonFragment(['next_page_url' => $nextPageUrl]);
 
         $response = $this->get($nextPageUrl);
         $response->assertStatus(200);
-        $response->assertJsonCount(5, 'data');
+        $response->assertJsonCount(3, 'data');
         $response->assertJsonFragment(['next_page_url' => null]);
 
         $response = $this->get($url.'?query=foo');

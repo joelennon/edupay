@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CourseListResource;
 use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\Request;
@@ -24,14 +25,14 @@ class CategoryCoursesController extends Controller
         }
 
         if ($query = $request->query('query')) {
-            return Course::search($query)
+            $courses = Course::search($query)
                 ->where('tenant_id', $request->tenant->id)
-                ->where('category_id', $category->id)
-                ->simplePaginate(self::ITEMS_PER_PAGE);
+                ->where('category_id', $category->id);
+        } else {
+            $courses = $category->courses()
+                ->orderBy('day');
         }
 
-        return $category->courses()
-            ->orderBy('day')
-            ->simplePaginate(self::ITEMS_PER_PAGE);
+        return CourseListResource::collection($courses->simplePaginate(self::ITEMS_PER_PAGE));
     }
 }
