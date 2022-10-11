@@ -1,13 +1,17 @@
 import { Fragment, createElement, ReactNode } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
-import { Avatar } from "./";
+import { Avatar, NavLink } from "./";
 
 const navigation = [
-    { name: "Courses", uri: "/courses" },
+    {
+        name: "Courses",
+        uri: "/courses",
+        altUri: "/categories",
+    },
     { name: "Teachers", uri: "/teachers" },
     { name: "Students", uri: "/students" },
     { name: "Payments", uri: "/payments" },
@@ -18,6 +22,7 @@ type NavbarItem = {
     name: string;
     uri: string;
     current: boolean;
+    altUri?: string;
 };
 
 type NavbarItemProps = {
@@ -173,6 +178,7 @@ const NavbarItem = ({
     return (
         <NavLink
             to={item.uri}
+            alternativeMatchPath={item.altUri}
             className={({ isActive }) =>
                 clsx(className, isActive ? activeClassName : inactiveClassName)
             }

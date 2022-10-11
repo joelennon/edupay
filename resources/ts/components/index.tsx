@@ -6,5 +6,6 @@ export { default as Container } from "./container";
 export { default as Empty } from "./empty";
 export { default as Loading } from "./loading";
 export { Navbar } from "./navbar";
+export { default as NavLink } from "./navlink";
 export { Pills, Pill } from "./pills";
 export { default as Well } from "./well";

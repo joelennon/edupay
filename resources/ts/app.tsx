@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 
 import { Container, Navbar } from "./components";
-import { CoursesList, Course } from "./screens";
+import { CoursesList, Course, NotFound } from "./screens";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: "courses/:courseId",
                 element: <Course />,
+            },
+            {
+                path: "*",
+                element: <NotFound />,
             },
         ],
     },
