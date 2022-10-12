@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
                 'fee_cents' => 11000,
                 'tutor' => null,
                 'new' => false,
+                'banner' => 'https://images.pexels.com/photos/7522/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
             ], [
                 'code' => 'L02',
                 'title' => 'Italian — Intermediate',
@@ -58,6 +59,7 @@ class DatabaseSeeder extends Seeder
                 'fee_cents' => 11000,
                 'tutor' => 'Margherita Bucci',
                 'new' => false,
+                'banner' => 'https://images.unsplash.com/photo-1499602211854-122b55ef8f5d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2330&q=80',
             ], [
                 'code' => 'L03',
                 'title' => 'German — Beginners',
@@ -70,6 +72,7 @@ class DatabaseSeeder extends Seeder
                 'fee_cents' => 11000,
                 'tutor' => null,
                 'new' => false,
+                'banner' => 'https://images.unsplash.com/photo-1569734618166-a2397370d11e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2658&q=80',
             ], [
                 'code' => 'L04',
                 'title' => 'Spanish — Beginners',
@@ -82,6 +85,7 @@ class DatabaseSeeder extends Seeder
                 'fee_cents' => 11000,
                 'tutor' => 'Felix Monje',
                 'new' => false,
+                'banner' => 'https://images.unsplash.com/photo-1561632669-7f55f7975606?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
             ], [
                 'code' => 'L05',
                 'title' => 'Spanish — Beginners Level 2',
@@ -94,6 +98,7 @@ class DatabaseSeeder extends Seeder
                 'fee_cents' => 11000,
                 'tutor' => 'Felix Monje',
                 'new' => false,
+                'banner' => 'https://images.unsplash.com/photo-1566232392379-afd9298e6a46?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
             ], [
                 'code' => 'L06',
                 'title' => 'Spanish - Intermediate',
@@ -106,6 +111,7 @@ class DatabaseSeeder extends Seeder
                 'fee_cents' => 11000,
                 'tutor' => 'Felix Monje',
                 'new' => false,
+                'banner' => 'https://images.unsplash.com/photo-1559564477-009e866dda7e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80',
             ], [
                 'code' => 'L07',
                 'title' => 'English as a 2nd Language',
@@ -118,6 +124,7 @@ class DatabaseSeeder extends Seeder
                 'fee_cents' => 11000,
                 'tutor' => null,
                 'new' => false,
+                'banner' => 'https://images.pexels.com/photos/159581/dictionary-reference-book-learning-meaning-159581.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
             ]],
         ], [
             'name' => 'Arts and Crafts',
@@ -518,7 +525,43 @@ class DatabaseSeeder extends Seeder
         ], [
             'name' => 'Social and Development',
             'description' => null,
-            'courses' => [],
+            'courses' => [[
+                'code' => 'D01',
+                'title' => 'Drama & Creativity for Positive Mental Health',
+                'subtitle' => null,
+                'description' => 'The primary focus of this workshop is to develop skills of expression and encourage engagement with creativity in a positive and productive manner. The workshop aims to better the mental health of participants through the medium of drama.',
+                'day' => 'Wednesday',
+                'start_time' => '19:15',
+                'end_time' => '20:45',
+                'duration' => '8 weeks',
+                'fee_cents' => 8000,
+                'tutor' => 'Ciaran McArtain',
+                'new' => false,
+            ], [
+                'code' => 'D02',
+                'title' => 'An Introduction to Positive Psychology',
+                'subtitle' => null,
+                'description' => 'Unlike traditional psychology which studies what is \'wrong\' with people, the science of positive psychology explores optimal functioning and what is \'right\' with people; why they excel and what makes them so happy. It scientifically and practically explores themes such as optimism, emotions, flow, happiness, well-being, resilience, gratitude, mind-set, meaning, purpose and motivation as well as introducing you to interventions to bolster your own positive psychological state.',
+                'day' => 'Tuesday',
+                'start_time' => '19:30',
+                'end_time' => '21:30',
+                'duration' => '8 weeks',
+                'fee_cents' => 9000,
+                'tutor' => null,
+                'new' => false,
+            ], [
+                'code' => 'D03',
+                'title' => 'Skin Care, Nail Treatments, Make Up Application',
+                'subtitle' => null,
+                'description' => 'In this \'hands-on\' course, discover your skin type through a personalised skin analysis giving you the knowledge to select the best beauty preparations. Learn simple skills for luxury nail treatments and great techniques with everyday and evening make-up',
+                'day' => 'Tuesday',
+                'start_time' => '19:30',
+                'end_time' => '21:30',
+                'duration' => '6 weeks',
+                'fee_cents' => 7000,
+                'tutor' => 'Barbara Braham - Beauty Therapist ITEC, CIBTAC',
+                'new' => false,
+            ]],
         ], [
             'name' => 'Hobby and Skills',
             'description' => null,
@@ -540,10 +583,16 @@ class DatabaseSeeder extends Seeder
                 $c = Category::factory()->create(array_merge(Arr::only($category, ['name', 'description']), ['tenant_id' => $firstTenant->id]));
 
                 foreach ($category['courses'] as $course) {
-                    Course::factory()->create(array_merge($course, [
+                    $data = array_merge(Arr::except($course, 'banner'), [
                         'tenant_id' => $firstTenant->id,
                         'category_id' => $c->id,
-                    ]));
+                    ]);
+
+                    $co = Course::factory()->create($data);
+
+                    if (isset($course['banner'])) {
+                        $co->addMediaFromUrl($course['banner'])->toMediaCollection('banner');
+                    }
                 }
             }
         }

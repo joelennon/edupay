@@ -18,3 +18,4 @@ yarn-error.log
 /data.ms/*
 .DS_Store
 /database/.minio
+/storage/media-library
