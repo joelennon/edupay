@@ -561,6 +561,18 @@ class DatabaseSeeder extends Seeder
                 'fee_cents' => 7000,
                 'tutor' => 'Barbara Braham - Beauty Therapist ITEC, CIBTAC',
                 'new' => false,
+            ], [
+                'code' => 'D04',
+                'title' => 'Speaking with Confidence',
+                'subtitle' => null,
+                'description' => 'In a relaxed atmosphere, we will consider the basics of confident speaking and begin putting them into practice. We\'ll review some useful approaches to organizing your thoughts —for instance, breaking a topic down into a few key points—and we\'ll learn how to have physical ease and a calm voice when speaking and how to engage an audience with simple techniques like eye contact and good humour.',
+                'day' => 'Wednesday',
+                'start_time' => '19:30',
+                'end_time' => '21:30',
+                'duration' => '10 weeks',
+                'fee_cents' => 11000,
+                'tutor' => 'M. Booth',
+                'new' => false,
             ]],
         ], [
             'name' => 'Hobby and Skills',
