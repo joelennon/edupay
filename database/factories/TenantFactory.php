@@ -19,6 +19,7 @@ class TenantFactory extends Factory
         return [
             'name' => fake()->company(),
             'domain' => fake()->domainWord().'.'.config('app.root_domain'),
+            'color' => fake()->randomElement(['blue', 'green', 'pink', 'red', 'orange', 'cyan', 'teal', 'purple', 'indigo']),
         ];
     }
 }

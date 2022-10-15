@@ -90,7 +90,7 @@ export default ({
         (error || (icon && iconPosition === "right")) && "pr-10",
         error &&
             "border-red-300 text-red-900 placeholder-red-900 focus:border-red-500 focus:outline-none focus:ring-red-500",
-        !error && "border-gray-300 focus:border-cyan-500 focus:ring-cyan-500",
+        !error && "border-gray-300 focus:border-primary focus:ring-primary",
         cls
     );
 

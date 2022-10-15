@@ -66,7 +66,7 @@ export const Select = ({
                             {label}
                         </Listbox.Label>
                         <div className="relative mt-1">
-                            <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 sm:text-sm">
+                            <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm">
                                 <span className="flex w-full truncate items-center">
                                     {statusProp && selected[statusProp] && (
                                         <Status color={selected[statusProp]} />
@@ -127,7 +127,7 @@ export const Option = ({
         <Listbox.Option
             className={({ active }) =>
                 clsx(
-                    active ? "text-white bg-cyan-600" : "text-gray-900",
+                    active ? "text-white bg-primary" : "text-gray-900",
                     checkPosition === "right" && "pl-3 pr-9",
                     checkPosition === "left" && "pl-8 pr-4",
                     "relative cursor-default select-none py-2"
@@ -159,7 +159,9 @@ export const Option = ({
                             </span>
                             <span
                                 className={clsx(
-                                    active ? "text-cyan-200" : "text-gray-500",
+                                    active
+                                        ? "text-primary/25"
+                                        : "text-gray-500",
                                     "ml-2 truncate"
                                 )}
                             >
@@ -170,7 +172,7 @@ export const Option = ({
                         {selected ? (
                             <span
                                 className={clsx(
-                                    active ? "text-white" : "text-cyan-600",
+                                    active ? "text-white" : "text-primary",
                                     checkPosition === "right" && "right-0 pr-4",
                                     checkPosition === "left" && "left-0 pl-1.5",
                                     "absolute inset-y-0 flex items-start mt-2.5"
@@ -186,7 +188,7 @@ export const Option = ({
                     {helpTextProp && option[helpTextProp] && (
                         <p
                             className={clsx(
-                                active ? "text-cyan-200" : "text-gray-500",
+                                active ? "text-primary/25" : "text-gray-500",
                                 "mt-2"
                             )}
                         >
@@ -235,7 +237,7 @@ export const NativeSelect = ({
             <select
                 id={id}
                 name={name}
-                className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-primary focus:outline-none focus:ring-primary sm:text-sm"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
             >

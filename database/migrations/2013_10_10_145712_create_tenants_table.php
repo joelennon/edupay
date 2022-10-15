@@ -16,6 +16,7 @@ return new class() extends Migration {
             $table->id();
             $table->string('name');
             $table->string('domain');
+            $table->string('color')->default('blue');
             $table->timestamps();
         });
     }

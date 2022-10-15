@@ -18,7 +18,7 @@ export const Pill = ({ pill, appendQuery = null }) => (
         className={({ isActive }) =>
             clsx(
                 isActive
-                    ? "bg-cyan-600 text-white"
+                    ? "bg-primary text-white"
                     : "text-gray-500 hover:text-gray-700",
                 "px-3 py-2 font-medium text-sm rounded-md"
             )

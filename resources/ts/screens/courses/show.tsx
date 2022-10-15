@@ -44,7 +44,7 @@ export default () => {
                             )}
                         </div>
                         {data.subtitle && (
-                            <div className="text-2xl mb-4 text-cyan-600">
+                            <div className="text-2xl mb-4 text-primary">
                                 {data.subtitle}
                             </div>
                         )}

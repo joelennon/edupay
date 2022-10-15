@@ -44,11 +44,11 @@ export default ({
         "inline-flex items-center border",
         "font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2",
         variant === "primary" &&
-            "bg-cyan-600 border-transparent text-white hover:bg-cyan-700 focus:ring-cyan-500",
+            "bg-primary border-transparent text-white hover:bg-primary/75 focus:ring-primary",
         variant === "secondary" &&
-            "bg-cyan-100 border-transparent text-cyan-700 hover:bg-cyan-200 focus:ring-cyan-500",
+            "bg-primary/25 border-transparent text-primary hover:bg-primary/50 focus:ring-primary",
         variant === "white" &&
-            "bg-white border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-cyan-500",
+            "bg-white border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-primary",
         (shape === "pill" || shape === "circle") && "rounded-full",
         shape === "rounded" && size === "x-small" && "rounded px-2.5",
         shape === "pill" && size === "x-small" && "px-3",

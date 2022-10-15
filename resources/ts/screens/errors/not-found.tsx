@@ -5,9 +5,9 @@ import { Container } from "../../components";
 export default () => (
     <Container className="mt-20 mb-8">
         <div className="flex items-start space-x-6">
-            <FaceFrownIcon className="w-24 h-24 text-cyan-600 opacity-50" />
+            <FaceFrownIcon className="w-24 h-24 text-primary opacity-50" />
             <div>
-                <h1 className="text-4xl font-bold text-cyan-700 mt-3">
+                <h1 className="text-4xl font-bold text-primary mt-3">
                     Oops! Page not found!
                 </h1>
                 <p className="text-lg text-gray-600 mt-4">

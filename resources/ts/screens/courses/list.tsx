@@ -119,7 +119,7 @@ const Course = ({ course }: { course: Course }) => {
         <Link
             to={course.url}
             state={{ previous }}
-            className="group overflow-hidden bg-white rounded-lg shadow hover:bg-cyan-50 flex flex-col"
+            className="group overflow-hidden bg-white rounded-lg shadow hover:bg-gray-100 flex flex-col"
         >
             <div className="relative">
                 <img
