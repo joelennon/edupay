@@ -11,6 +11,13 @@
     @viteReactRefresh
     @vite('resources/ts/app.tsx')
     <style type="text/css">
+        /* 
+        TODO
+        So this is a hot mess really, best thing to do here is probably to handle this in controller.
+        For some components we may need lighter variants also for each color. We can use opacity fading
+        but it doesn't look right, we'd be better off using 2-3 shades for each color across all
+        components. So we may need a `primary-light` and `primary-dark` CSS variable here.
+        */
         :root {
             @switch(request()->tenant->color) @case('red') --primary: 220 38 38;
             @break @case('orange') --primary: 234 88 12;
