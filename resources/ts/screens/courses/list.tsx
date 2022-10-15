@@ -82,7 +82,7 @@ export default () => {
     });
 
     return (
-        <Container className="mt-16 mb-8">
+        <Container className="mt-20 mb-8">
             <div className="flex items-center justify-between">
                 <div className="font-bold my-4 text-2xl">Courses</div>
                 <Search />
