@@ -43,7 +43,7 @@
 </head>
 
 <body class="font-sans antialiased bg-gray-100 theme-{{ request()->tenant->color }}">
-    <div id="app" data-user="{{  request()->user() }}"></div>
+    <div id="app" data-user="{{  request()->user() }}" data-tenant="{{ request()->tenant }}" }}></div>
 </body>
 
 </html>

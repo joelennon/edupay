@@ -9,19 +9,33 @@ import {
     Navigate,
     ScrollRestoration,
 } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
-import { Container, Navbar } from "./components";
+import { Navbar } from "./components";
 import { CoursesList, Course, NotFound } from "./screens";
+import { AppContext } from "./context";
 
 const queryClient = new QueryClient();
 
+const el = document.getElementById("app");
+const user = JSON.parse(el.dataset.user);
+const tenant = JSON.parse(el.dataset.tenant);
+
 const Root = (): JSX.Element => (
     <QueryClientProvider client={queryClient}>
-        <Navbar />
+        <AppContext.Provider value={{ tenant, user }}>
+            <Helmet
+                titleTemplate={`%s - ${tenant.name} | Powered by EduPay`}
+                defaultTitle="Home"
+            >
+                <title>Home</title>
+            </Helmet>
+            <Navbar />
 
-        <Outlet />
+            <Outlet />
 
-        <ScrollRestoration getKey={(location) => location.pathname} />
+            <ScrollRestoration getKey={(location) => location.pathname} />
+        </AppContext.Provider>
     </QueryClientProvider>
 );
 
@@ -48,6 +62,4 @@ const router = createBrowserRouter([
     },
 ]);
 
-createRoot(document.getElementById("app")).render(
-    <RouterProvider router={router} />
-);
+createRoot(el).render(<RouterProvider router={router} />);

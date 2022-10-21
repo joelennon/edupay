@@ -6,6 +6,7 @@ import {
     Link,
     useLocation,
 } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import { useInView } from "react-cool-inview";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
@@ -83,6 +84,9 @@ export default () => {
 
     return (
         <Container className="mt-20 mb-8">
+            <Helmet>
+                <title>Courses</title>
+            </Helmet>
             <div className="flex items-center justify-between">
                 <div className="font-bold my-4 text-2xl">Courses</div>
                 <Search />
@@ -166,6 +170,8 @@ const Course = ({ course }: { course: Course }) => {
 const CategoryList = () => {
     const [searchParams] = useSearchParams();
     const query = searchParams.get("query");
+    const { pathname } = useLocation();
+
     const { isSuccess, data } = useQuery(["categories"], async ({ signal }) => {
         const { data } = await axios.get(`/api/categories`, {
             signal,
@@ -178,8 +184,15 @@ const CategoryList = () => {
 
     const appendQuery = query ? `?query=${query}` : null;
 
+    const currentCategory = data.find((c) => c.url === pathname);
+
     return (
         <div className="space-x-2 flex items-center whitespace-nowrap">
+            {currentCategory && (
+                <Helmet>
+                    <title>{currentCategory.name} Courses</title>
+                </Helmet>
+            )}
             <span className="font-medium text-xs mr-2 pb-4">
                 Browse by Category:
             </span>

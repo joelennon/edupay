@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 
@@ -33,6 +34,9 @@ export default () => {
                 <BackButton />
                 {isSuccess && (
                     <div className="my-8">
+                        <Helmet>
+                            <title>{data.title}</title>
+                        </Helmet>
                         <div className="font-bold text-5xl mb-4 flex items-center space-x-4">
                             <span>{data.title}</span>
                             {data.new && (
