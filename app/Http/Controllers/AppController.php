@@ -21,13 +21,14 @@ class AppController extends Controller
         $tenant = $request->tenant;
         $color = $this->getTenantColorRgbValue($tenant);
 
-        $rootBaseUrl = $request->getScheme().'://'.config('app.root_domain');
+        $loginUrl = route('login');
 
         return view('app')->with([
             'user' => $user ? new AuthUser($user) : null,
             'tenant' => new BasicTenant($tenant),
             'color' => $color,
-            'rootBaseUrl' => $rootBaseUrl,
+            'loginUrl' => route('login'),
+            'logoutUrl' => route('logout'),
         ]);
     }
 

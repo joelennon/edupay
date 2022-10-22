@@ -20,7 +20,8 @@
 
 <body class="font-sans antialiased bg-gray-100 theme-{{ $tenant->color }}">
     <div id="app" @if ($user) data-user="{{ json_encode($user) }}" @endif
-        data-tenant="{{ json_encode($tenant) }}" data-root-base-url="{{ $rootBaseUrl }}" }}></div>
+        data-tenant="{{ json_encode($tenant) }}" data-login-url="{{ $loginUrl }}"
+        data-logout-url="{{ $logoutUrl }}"></div>
 </body>
 
 </html>

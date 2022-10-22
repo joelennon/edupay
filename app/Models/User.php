@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -98,5 +99,11 @@ class User extends Model implements
         return Attribute::make(
             get: fn () => $this->getFirstTemporaryUrl(now()->addMinutes(5), 'avatar', 'small')
         );
+    }
+
+    public function enrolments(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'enrolments')
+            ->withTimestamps();
     }
 }

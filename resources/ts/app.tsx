@@ -20,11 +20,12 @@ const queryClient = new QueryClient();
 const el = document.getElementById("app");
 const user = JSON.parse(el.dataset.user ?? null);
 const tenant = JSON.parse(el.dataset.tenant);
-const rootBaseUrl = el.dataset.rootBaseUrl;
+const loginUrl = el.dataset.loginUrl;
+const logoutUrl = el.dataset.logoutUrl;
 
 const Root = (): JSX.Element => (
     <QueryClientProvider client={queryClient}>
-        <AppContext.Provider value={{ tenant, user, rootBaseUrl }}>
+        <AppContext.Provider value={{ tenant, user, loginUrl, logoutUrl }}>
             <Helmet
                 titleTemplate={`%s - ${tenant.name} | Powered by EduPay`}
                 defaultTitle="Home"

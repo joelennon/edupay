@@ -211,7 +211,7 @@ const NavbarButtonIcon = ({ icon }: NavbarButtonIconProps): JSX.Element => {
 };
 
 const NavbarUserMenu = (): JSX.Element => {
-    const { user, rootBaseUrl } = useContext(AppContext);
+    const { user, loginUrl, logoutUrl } = useContext(AppContext);
     const { pathname } = useLocation();
 
     return (
@@ -241,7 +241,7 @@ const NavbarUserMenu = (): JSX.Element => {
                             <NavbarUserMenuItem
                                 type="form"
                                 method="post"
-                                action={`${rootBaseUrl}/logout`}
+                                action={logoutUrl}
                             >
                                 Sign out
                             </NavbarUserMenuItem>
@@ -250,7 +250,7 @@ const NavbarUserMenu = (): JSX.Element => {
                     {!user && (
                         <Fragment>
                             <NavbarUserMenuItem
-                                href={`${rootBaseUrl}/login?intended=${window.location.origin}${pathname}`}
+                                href={`${loginUrl}?intended=${window.location.origin}${pathname}`}
                             >
                                 Login
                             </NavbarUserMenuItem>

@@ -1,22 +1,30 @@
+import axios from "axios";
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { Button, Container } from "../../components";
 import { AppContext } from "../../context";
 
 export default () => {
-    const { user, rootBaseUrl } = useContext(AppContext);
+    const { user, loginUrl } = useContext(AppContext);
     const { pathname } = useLocation();
+    const params = useParams();
+    const courseId = params.courseId?.split("-").pop();
 
     useEffect(() => {
         if (!user) {
-            window.location = `${rootBaseUrl}/login?intended=${window.location.origin}${pathname}`;
+            window.location = `${loginUrl}?intended=${window.location.origin}${pathname}`;
         }
     }, []);
 
     async function enrol() {
-        //
+        const { data } = await axios.post(
+            `/api/courses/${courseId}/enrolments`,
+            {}
+        );
+
+        console.log(data);
     }
 
     return (

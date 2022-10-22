@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CategoriesController;
 use App\Http\Controllers\Api\CategoryCoursesController;
 use App\Http\Controllers\Api\CoursesController;
+use App\Http\Controllers\Api\EnrolmentsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,5 +18,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::apiResource('courses', CoursesController::class);
+Route::post('courses/{course}/enrolments', [EnrolmentsController::class, 'store']);
 Route::apiResource('categories', CategoriesController::class);
 Route::get('categories/{category}/courses', CategoryCoursesController::class);
