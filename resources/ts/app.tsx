@@ -18,7 +18,7 @@ import { AppContext } from "./context";
 const queryClient = new QueryClient();
 
 const el = document.getElementById("app");
-const user = JSON.parse(el.dataset.user);
+const user = JSON.parse(el.dataset.user ?? null);
 const tenant = JSON.parse(el.dataset.tenant);
 
 const Root = (): JSX.Element => (

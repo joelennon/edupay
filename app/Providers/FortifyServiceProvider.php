@@ -31,7 +31,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Fortify::loginView(function () {
+        Fortify::ignoreRoutes();
+
+        Fortify::loginView(function (Request $request) {
+            if ($intended = $request->query('intended')) {
+                session()->put('intended', $intended);
+            }
+
             return view('auth.login');
         });
 

@@ -1,10 +1,11 @@
-import { Fragment, createElement, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Fragment, ReactNode, createElement, useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 import { Avatar, NavLink } from "./";
+import { AppContext } from "../context";
 
 const navigation = [
     {
@@ -36,6 +37,9 @@ type NavbarButtonProps = {
 };
 
 type NavbarUserMenuItemProps = {
+    type?: string;
+    method?: string;
+    action?: string;
     href?: string;
     children: ReactNode;
 };
@@ -206,47 +210,99 @@ const NavbarButtonIcon = ({ icon }: NavbarButtonIconProps): JSX.Element => {
     });
 };
 
-const NavbarUserMenu = (): JSX.Element => (
-    <Menu as="div" className="relative ml-3">
-        <div>
-            <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                <span className="sr-only">Open user menu</span>
-                <Avatar size={8} src="/user.jpeg" name="Joe Lennon" />
-            </Menu.Button>
-        </div>
-        <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-        >
-            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <NavbarUserMenuItem>Your Profile</NavbarUserMenuItem>
-                <NavbarUserMenuItem>Settings</NavbarUserMenuItem>
-                <NavbarUserMenuItem>Sign out</NavbarUserMenuItem>
-            </Menu.Items>
-        </Transition>
-    </Menu>
-);
+const NavbarUserMenu = (): JSX.Element => {
+    const { user } = useContext(AppContext);
+    const { pathname } = useLocation();
+
+    return (
+        <Menu as="div" className="relative ml-3">
+            <div>
+                <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <span className="sr-only">Open user menu</span>
+                    <Avatar size={8} src={user?.avatar} name={user?.name} />
+                </Menu.Button>
+            </div>
+            <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+            >
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    {user && (
+                        <Fragment>
+                            <NavbarUserMenuItem>
+                                Your Profile
+                            </NavbarUserMenuItem>
+                            <NavbarUserMenuItem>Settings</NavbarUserMenuItem>
+                            <NavbarUserMenuItem
+                                type="form"
+                                method="post"
+                                action="https://edupay.test/logout"
+                            >
+                                Sign out
+                            </NavbarUserMenuItem>
+                        </Fragment>
+                    )}
+                    {!user && (
+                        <Fragment>
+                            <NavbarUserMenuItem
+                                href={`https://edupay.test/login?intended=${window.location.origin}${pathname}`}
+                            >
+                                Login
+                            </NavbarUserMenuItem>
+                            <NavbarUserMenuItem>Sign up</NavbarUserMenuItem>
+                        </Fragment>
+                    )}
+                </Menu.Items>
+            </Transition>
+        </Menu>
+    );
+};
 
 const NavbarUserMenuItem = ({
+    type = "link",
+    method = "post",
+    action,
     href = "#",
     children,
-}: NavbarUserMenuItemProps): JSX.Element => (
-    <Menu.Item>
-        {({ active }) => (
-            <a
-                href={href}
-                className={clsx(
-                    active ? "bg-gray-100" : "",
-                    "block px-4 py-2 text-sm text-gray-700"
-                )}
-            >
-                {children}
-            </a>
-        )}
-    </Menu.Item>
-);
+}: NavbarUserMenuItemProps): JSX.Element => {
+    const csrfToken = document
+        .querySelector("meta[name=csrf]")
+        .getAttribute("content");
+
+    return (
+        <Menu.Item>
+            {({ active }) => (
+                <>
+                    {type === "link" && (
+                        <a
+                            href={href}
+                            className={clsx(
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                            )}
+                        >
+                            {children}
+                        </a>
+                    )}
+                    {type === "form" && (
+                        <form method={method} action={action}>
+                            <input
+                                type="hidden"
+                                name="_token"
+                                value={csrfToken}
+                            />
+                            <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                {children}
+                            </button>
+                        </form>
+                    )}
+                </>
+            )}
+        </Menu.Item>
+    );
+};

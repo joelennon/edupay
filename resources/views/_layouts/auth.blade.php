@@ -8,11 +8,21 @@
     <title>EduPay</title>
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Inter var", ...tailwind.defaultTheme.fontFamily.sans],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
 <body>
-    <h1>EduPay</h1>
     @yield('content')
 </body>
 

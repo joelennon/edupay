@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';
 
     private const MAX_REQUESTS_PER_SECOND = 10;
 
@@ -36,6 +36,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
+                ->domain(config('app.root_domain'))
                 ->group(base_path('routes/web.php'));
 
             Route::middleware(['web', 'domain'])
