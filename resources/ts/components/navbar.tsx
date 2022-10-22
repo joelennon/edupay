@@ -211,7 +211,7 @@ const NavbarButtonIcon = ({ icon }: NavbarButtonIconProps): JSX.Element => {
 };
 
 const NavbarUserMenu = (): JSX.Element => {
-    const { user } = useContext(AppContext);
+    const { user, rootBaseUrl } = useContext(AppContext);
     const { pathname } = useLocation();
 
     return (
@@ -241,7 +241,7 @@ const NavbarUserMenu = (): JSX.Element => {
                             <NavbarUserMenuItem
                                 type="form"
                                 method="post"
-                                action="https://edupay.test/logout"
+                                action={`${rootBaseUrl}/logout`}
                             >
                                 Sign out
                             </NavbarUserMenuItem>
@@ -250,7 +250,7 @@ const NavbarUserMenu = (): JSX.Element => {
                     {!user && (
                         <Fragment>
                             <NavbarUserMenuItem
-                                href={`https://edupay.test/login?intended=${window.location.origin}${pathname}`}
+                                href={`${rootBaseUrl}/login?intended=${window.location.origin}${pathname}`}
                             >
                                 Login
                             </NavbarUserMenuItem>

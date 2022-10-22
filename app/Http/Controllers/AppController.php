@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AuthUser;
+use App\Http\Resources\BasicTenant;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 
@@ -20,16 +21,19 @@ class AppController extends Controller
         $tenant = $request->tenant;
         $color = $this->getTenantColorRgbValue($tenant);
 
+        $rootBaseUrl = $request->getScheme().'://'.config('app.root_domain');
+
         return view('app')->with([
             'user' => $user ? new AuthUser($user) : null,
-            'tenant' => $tenant,
+            'tenant' => new BasicTenant($tenant),
             'color' => $color,
+            'rootBaseUrl' => $rootBaseUrl,
         ]);
     }
 
     private function getTenantColorRgbValue(Tenant $tenant)
     {
-        switch($tenant->color) {
+        switch ($tenant->color) {
             case 'red': return '220 38 38';
             case 'orange': return '234 88 12';
             case 'amber': return '217 119 6';

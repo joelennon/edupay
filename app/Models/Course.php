@@ -7,7 +7,6 @@ use App\Traits\HasSlug;
 use App\Traits\HasTenant;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
@@ -26,6 +25,8 @@ class Course extends Model implements HasMedia
     private const CURRENCIES = [
         'EUR' => '€',
     ];
+
+    protected $perPage = 12;
 
     protected $casts = [
         'new' => 'boolean',

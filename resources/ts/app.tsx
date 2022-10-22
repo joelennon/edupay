@@ -12,7 +12,7 @@ import {
 import { Helmet } from "react-helmet";
 
 import { Navbar } from "./components";
-import { CoursesList, Course, NotFound } from "./screens";
+import { CoursesList, Course, Enrol, NotFound } from "./screens";
 import { AppContext } from "./context";
 
 const queryClient = new QueryClient();
@@ -20,10 +20,11 @@ const queryClient = new QueryClient();
 const el = document.getElementById("app");
 const user = JSON.parse(el.dataset.user ?? null);
 const tenant = JSON.parse(el.dataset.tenant);
+const rootBaseUrl = el.dataset.rootBaseUrl;
 
 const Root = (): JSX.Element => (
     <QueryClientProvider client={queryClient}>
-        <AppContext.Provider value={{ tenant, user }}>
+        <AppContext.Provider value={{ tenant, user, rootBaseUrl }}>
             <Helmet
                 titleTemplate={`%s - ${tenant.name} | Powered by EduPay`}
                 defaultTitle="Home"
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
                 path: "courses/:courseId",
                 element: <Course />,
             },
+            { path: "courses/:courseId/enrol", element: <Enrol /> },
             {
                 path: "*",
                 element: <NotFound />,

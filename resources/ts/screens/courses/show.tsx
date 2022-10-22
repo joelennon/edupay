@@ -1,11 +1,13 @@
+import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 
 import { Badge, Button, Container, Card, CardBody } from "../../components";
 import { formatTime } from "../../helpers/date";
+import { AppContext } from "../../context";
 
 export default () => {
     const params = useParams();
@@ -53,9 +55,13 @@ export default () => {
                             </div>
                         )}
                         <div className="flex items-start space-x-8">
-                            <p className="text-lg text-gray-600 flex-1">
-                                {data.description ?? "No description provided."}
-                            </p>
+                            <div className="flex-1">
+                                <p className="text-lg text-gray-600 flex-1">
+                                    {data.description ??
+                                        "No description provided."}
+                                </p>
+                                <Enrol />
+                            </div>
                             <Card className="w-64">
                                 <CardBody>
                                     <dl className="space-y-8">
@@ -143,4 +149,12 @@ const BackButton = () => {
     }
 
     return <Button onClick={goBack} text="Back" icon={ChevronLeftIcon} />;
+};
+
+const Enrol = () => {
+    const { user } = useContext(AppContext);
+
+    return (
+        <Link to="enrol">{user ? "Enrol" : "Login or Sign up to Enrol"}</Link>
+    );
 };
